@@ -1,0 +1,32 @@
+#!/bin/python3
+
+import sys
+import socket
+from datetime import datetime
+
+#Definir el objetivo
+
+if len(sys.argv) == 2:
+	#transforma el HOSTNAME al protocolo IPv4
+	target = socket.gethostbyname(sys.argv[1])
+else:
+	print("Cantidad de argumentos inválidos.")
+	print("Syntaxis: python3 portscanner.py <ip>")
+
+#decoracion
+
+print("-"*50)
+print("Escaneando objetivo: "+ target)
+print("Escaneo comenzo a las: "+str(datetime.now()))
+print("-"*50)
+
+try:
+	for port in range (1,65535):
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		socket.setdefaulttimeout(1)
+		#retorna un indicador de error
+		result = s.connect_ex((target,port))
+		print("Escaneando el puerto {}".format(port))
+		if result == 0:
+			print("Puerto {} esta abierto".format(port))
+		s.close()
